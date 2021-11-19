@@ -1,7 +1,9 @@
 [package]
 name = "socken5"
 version = "0.1.0"
+authors = ["FreeziFtw <FreeziFtw@gmail.com>"]
 edition = "2021"
+repository = "https://github.com/FreeziFtw/socken5"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
