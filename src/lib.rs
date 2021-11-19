@@ -1,5 +1,6 @@
 use std::net::{Ipv4Addr, Ipv6Addr};
 
+pub mod error;
 const VERSION: u8 = 0x05;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
