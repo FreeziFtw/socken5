@@ -1,5 +1,7 @@
 use std::net::{Ipv4Addr, Ipv6Addr};
 
+const VERSION: u8 = 0x05;
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Method {
     NoAuth,
