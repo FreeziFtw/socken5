@@ -1,9 +1,22 @@
+use async_trait::async_trait;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
 use std::result;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
 use crate::error::{Result, Error};
 pub mod error;
 const VERSION: u8 = 0x05;
+
+#[async_trait]
+pub trait AsyncWrite {
+    async fn write<W>(&self, buf: &mut W) -> Result<()> where W: AsyncWriteExt + Unpin + Send;
+}
+
+#[async_trait]
+pub trait AsyncRead: Sized {
+    async fn read<R>(buf: &mut R) -> Result<Self> where R: AsyncReadExt + Unpin + Send;
+}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Method {
