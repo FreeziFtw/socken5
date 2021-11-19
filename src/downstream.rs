@@ -18,3 +18,41 @@ impl AsyncWrite for Handshake {
         Ok(())
     }
 }
+
+#[derive(Debug)]
+pub struct CommandResponse {
+    pub reply: Reply,
+    pub addr: Addr,
+    pub port: u16,
+}
+
+#[async_trait]
+impl AsyncWrite for CommandResponse {
+    async fn write<W>(&self, buf: &mut W) -> Result<()>
+        where
+            W: AsyncWriteExt + Unpin + Send
+    {
+        buf.write_u8(VERSION).await?;
+        buf.write_u8(u8::from(self.reply)).await?;
+        buf.write_u8(0x00).await?;
+
+        match &self.addr {
+            Addr::V4(ip) => {
+                buf.write_u8(0x01).await?;
+                buf.write(&ip.octets()).await?;
+            }
+            Addr::Domain(domain) => {
+                buf.write_u8(0x03).await?;
+                buf.write_u8(u8::try_from(domain.len())?).await?;
+                buf.write(domain.as_bytes()).await?;
+            }
+            Addr::V6(ip) => {
+                buf.write_u8(0x04).await?;
+                buf.write(&ip.octets()).await?;
+            }
+        }
+
+        buf.write_u16(self.port).await?;
+        Ok(())
+    }
+}
