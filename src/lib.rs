@@ -1,3 +1,4 @@
+use std::net::{Ipv4Addr, Ipv6Addr};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Method {
@@ -29,6 +30,14 @@ impl From<Method> for u8 {
             Method::NoAcceptable => 0xFF,
         }
     }
+}
+
+
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub enum Addr {
+    V4(Ipv4Addr),
+    Domain(String),
+    V6(Ipv6Addr),
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
