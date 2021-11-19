@@ -1,5 +1,7 @@
+use std::result;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
+use crate::error::{Result, Error};
 pub mod error;
 const VERSION: u8 = 0x05;
 
@@ -35,6 +37,35 @@ impl From<Method> for u8 {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum Command {
+    Connect,
+    Bind,
+    UdpAssociate,
+}
+
+impl TryFrom<u8> for Command {
+    type Error = Error;
+
+    fn try_from(val: u8) -> result::Result<Self, Self::Error> {
+        match val {
+            0x01 => Ok(Self::Connect),
+            0x02 => Ok(Self::Bind),
+            0x03 => Ok(Self::UdpAssociate),
+            _ => Err(Error::InvalidCommand)
+        }
+    }
+}
+
+impl From<Command> for u8 {
+    fn from(cmd: Command) -> Self {
+        match cmd {
+            Command::Connect => 0x01,
+            Command::Bind => 0x02,
+            Command::UdpAssociate => 0x03,
+        }
+    }
+}
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Addr {
