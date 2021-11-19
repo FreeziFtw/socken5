@@ -6,6 +6,8 @@ use std::net::{Ipv4Addr, Ipv6Addr};
 
 use crate::error::{Result, Error};
 pub mod error;
+pub mod upstream;
+
 const VERSION: u8 = 0x05;
 
 #[async_trait]
