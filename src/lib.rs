@@ -30,3 +30,32 @@ impl From<Method> for u8 {
         }
     }
 }
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum Reply {
+    Success,
+    ServerFailure,
+    NotAllowedByRuleset,
+    NetworkUnreachable,
+    HostUnreachable,
+    ConnectionRefused,
+    TtlExpired,
+    CommandNotSupported,
+    AddrTypeNotSupported,
+}
+
+impl From<Reply> for u8 {
+    fn from(reply: Reply) -> Self {
+        match reply {
+            Reply::Success => 0x00,
+            Reply::ServerFailure => 0x01,
+            Reply::NotAllowedByRuleset => 0x02,
+            Reply::NetworkUnreachable => 0x03,
+            Reply::HostUnreachable => 0x04,
+            Reply::ConnectionRefused => 0x05,
+            Reply::TtlExpired => 0x06,
+            Reply::CommandNotSupported => 0x07,
+            Reply::AddrTypeNotSupported => 0x08,
+        }
+    }
+}
