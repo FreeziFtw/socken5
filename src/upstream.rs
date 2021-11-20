@@ -14,8 +14,11 @@ impl AsyncRead for Handshake {
         where
             R: AsyncReadExt + Unpin + Send
     {
-        if buf.read_u8().await? != VERSION {
-            return Err(Error::InvalidVersion);
+        let version = buf.read_u8()
+            .await?;
+
+        if version != VERSION {
+            return Err(Error::InvalidVersion(version));
         }
 
         let len = usize::from(buf.read_u8().await?);
@@ -42,8 +45,11 @@ impl AsyncRead for CommandRequest {
         where
             R: AsyncReadExt + Unpin + Send
     {
-        if buf.read_u8().await? != VERSION {
-            return Err(Error::InvalidVersion);
+        let version = buf.read_u8()
+            .await?;
+
+        if version != VERSION {
+            return Err(Error::InvalidVersion(version));
         }
 
         let cmd = Command::try_from(buf.read_u8().await?)?;
