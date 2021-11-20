@@ -1,33 +1,21 @@
-use std::{result, fmt, io};
+use std::{result, io};
 use std::num::TryFromIntError;
 use std::string::FromUtf8Error;
 
 pub type Result<T> = result::Result<T, Error>;
 
-#[derive(fmt::Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum Error {
-    InvalidVersion,
+    #[error("invalid socks version (expected 5, found {0})")]
+    InvalidVersion(u8),
+    #[error("invalid command")]
     InvalidCommand,
+    #[error("invalid address type")]
     InvalidAddrType,
-    Io(io::Error),
-    Utf8(FromUtf8Error),
-    Int(TryFromIntError),
-}
-
-impl From<io::Error> for Error {
-    fn from(err: io::Error) -> Self {
-        Self::Io(err)
-    }
-}
-
-impl From<FromUtf8Error> for Error {
-    fn from(err: FromUtf8Error) -> Self {
-        Self::Utf8(err)
-    }
-}
-
-impl From<TryFromIntError> for Error {
-    fn from(err: TryFromIntError) -> Self {
-        Self::Int(err)
-    }
+    #[error("{0}")]
+    Io(#[from] io::Error),
+    #[error("{0}")]
+    Utf(#[from] FromUtf8Error),
+    #[error("{0}")]
+    Int(#[from] TryFromIntError),
 }
