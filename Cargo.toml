@@ -6,6 +6,7 @@ edition = "2021"
 repository = "https://github.com/FreeziFtw/socken5"
 
 [dependencies]
+thiserror = "1.0.30"
 async-trait = "0.1.51"
 
 [dependencies.tokio]
