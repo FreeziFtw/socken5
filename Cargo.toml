@@ -9,6 +9,7 @@ readme = "README.md"
 repository = "https://github.com/FreeziFtw/socken5"
 license = "MIT"
 keywords = ["socks5", "proxy"]
+include = ["src/", "LICENSE.md", "README.md"]
 
 [dependencies]
 thiserror = "1.0.30"
