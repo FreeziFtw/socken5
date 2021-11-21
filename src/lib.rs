@@ -4,11 +4,11 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use std::result;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
-pub use crate::error::{Result, Error};
-
 pub mod downstream;
-pub mod error;
+mod error;
 pub mod upstream;
+
+pub use crate::error::{Result, Error};
 
 const VERSION: u8 = 0x05;
 
