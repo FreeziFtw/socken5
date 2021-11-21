@@ -1,0 +1,15 @@
+[package]
+name = "simple-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15.0"
+anyhow = "1.0.47"
+
+[dependencies.socken5]
+path = "../.."
+
+[dependencies.tokio]
+version = "1.14.0"
+features = ["rt-multi-thread", "macros", "net"]
