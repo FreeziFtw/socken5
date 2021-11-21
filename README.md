@@ -1,6 +1,7 @@
 # Socken5
 
 [![Crate](https://img.shields.io/crates/v/socken5.svg)](https://crates.io/crates/socken5)
+[![Docs](https://img.shields.io/docsrs/socken5)](https://docs.rs/socken5)
 [![GitHub license](https://img.shields.io/github/license/FreeziFtw/Socken5)](./LICENSE.md)
 
 An incomplete Rust library for the [socks5](https://tools.ietf.org/html/rfc1928) protocol.
