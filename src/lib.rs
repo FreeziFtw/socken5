@@ -15,8 +15,10 @@ use std::result;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
 // Public modules
+/// Downstream packets.
 pub mod downstream;
 mod error;
+/// Upstream packets.
 pub mod upstream;
 
 // Public exports
