@@ -4,7 +4,7 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use std::result;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
-use crate::error::{Result, Error};
+pub use crate::error::{Result, Error};
 
 pub mod downstream;
 pub mod error;
