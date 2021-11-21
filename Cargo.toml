@@ -3,7 +3,12 @@ name = "socken5"
 version = "0.1.0"
 authors = ["FreeziFtw <FreeziFtw@gmail.com>"]
 edition = "2021"
+description = "Socks5 protocol structure"
+documentation = "https://docs.rs/socken5"
+readme = "README.md"
 repository = "https://github.com/FreeziFtw/socken5"
+license = "MIT"
+keywords = ["socks5", "proxy"]
 
 [dependencies]
 thiserror = "1.0.30"
