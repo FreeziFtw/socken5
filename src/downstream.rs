@@ -56,3 +56,18 @@ impl AsyncWrite for CommandResponse {
         Ok(())
     }
 }
+
+#[derive(Debug)]
+pub struct AuthResponse(pub u8);
+
+#[async_trait]
+impl AsyncWrite for AuthResponse {
+    async fn write<W>(&self, buf: &mut W) -> Result<()>
+        where
+            W: AsyncWriteExt + Unpin + Send
+    {
+        buf.write_u8(0x01).await?;
+        buf.write_u8(self.0).await?;
+        Ok(())
+    }
+}

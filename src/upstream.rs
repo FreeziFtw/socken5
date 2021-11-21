@@ -88,3 +88,49 @@ impl AsyncRead for CommandRequest {
         )
     }
 }
+
+#[derive(Debug)]
+pub struct AuthRequest {
+    pub user: String,
+    pub pass: String,
+}
+
+#[async_trait]
+impl AsyncRead for AuthRequest {
+    async fn read<R>(buf: &mut R) -> Result<Self>
+        where
+            R: AsyncReadExt + Unpin + Send
+    {
+        let version = buf.read_u8()
+            .await?;
+
+        if version != 0x01 {
+            return Err(Error::InvalidVersion(version));
+        }
+
+        let len = usize::from(buf.read_u8().await?);
+        let mut octets = Vec::with_capacity(len);
+
+        for _ in 0..len {
+            octets.push(buf.read_u8().await?);
+        }
+
+        let user = String::from_utf8(octets)?;
+
+        let len = usize::from(buf.read_u8().await?);
+        let mut octets = Vec::with_capacity(len);
+
+        for _ in 0..len {
+            octets.push(buf.read_u8().await?);
+        }
+
+        let pass = String::from_utf8(octets)?;
+
+        Ok(
+            Self {
+                user,
+                pass
+            }
+        )
+    }
+}
