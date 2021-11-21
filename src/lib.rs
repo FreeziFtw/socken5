@@ -1,13 +1,25 @@
+//! Socks5 protocol structure
+//!
+//! Socken5 provides an incomplete protocol structure for the socks5 protocol.
+//!
+//! # Usage
+//! ```toml
+//! [dependencies]
+//! socken5 = "0.1.0"
+//! ```
+
 use async_trait::async_trait;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 use std::result;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
+// Public modules
 pub mod downstream;
 mod error;
 pub mod upstream;
 
+// Public exports
 pub use crate::error::{Result, Error};
 
 const VERSION: u8 = 0x05;
@@ -22,12 +34,18 @@ pub trait AsyncRead: Sized {
     async fn read<R>(buf: &mut R) -> Result<Self> where R: AsyncReadExt + Unpin + Send;
 }
 
+/// A socks5 method.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Method {
+    /// No authentication.
     NoAuth,
+    /// Gssapi authentication.
     Gssapi,
+    /// Username/Password authentication.
     Auth,
+    /// Other methods.
     Other(u8),
+    /// No acceptable method found.
     NoAcceptable,
 }
 
@@ -54,10 +72,14 @@ impl From<Method> for u8 {
     }
 }
 
+/// A socks5 command.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Command {
+    /// Connect to target.
     Connect,
+    /// Bind to socket.
     Bind,
+    /// Associate Udp.
     UdpAssociate,
 }
 
@@ -84,23 +106,37 @@ impl From<Command> for u8 {
     }
 }
 
+/// An address type, either IPv4, IPv6 or domain name.
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum Addr {
+    /// An IPv4 address.
     V4(Ipv4Addr),
+    /// A domain domain name.
     Domain(String),
+    /// An IPv6 address.
     V6(Ipv6Addr),
 }
 
+/// A socks5 command reply.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Reply {
+    /// Successful.
     Success,
+    /// Internal server error.
     ServerFailure,
+    /// Connection not allowed by ruleset.
     NotAllowedByRuleset,
+    /// Network unreachable.
     NetworkUnreachable,
+    /// Host unreachable.
     HostUnreachable,
+    /// Connection refused.
     ConnectionRefused,
+    /// Ttl expired.
     TtlExpired,
+    /// Command not supported.
     CommandNotSupported,
+    /// Address type not supported.
     AddrTypeNotSupported,
 }
 

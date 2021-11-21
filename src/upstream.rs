@@ -5,6 +5,13 @@ use std::net::{Ipv4Addr, Ipv6Addr};
 use crate::error::{Result, Error};
 use crate::{AsyncRead, Command, VERSION, Method, Addr};
 
+/// ```text
+/// +----+----------+----------+
+/// |VER | NMETHODS | METHODS  |
+/// +----+----------+----------+
+/// | 1  |    1     | 1 to 255 |
+/// +----+----------+----------+
+/// ```
 #[derive(Debug)]
 pub struct Handshake(pub Vec<Method>);
 
@@ -32,6 +39,13 @@ impl AsyncRead for Handshake {
     }
 }
 
+/// ```text
+/// +----+-----+-------+------+----------+----------+
+/// |VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |
+/// +----+-----+-------+------+----------+----------+
+/// | 1  |  1  | X'00' |  1   | Variable |    2     |
+/// +----+-----+-------+------+----------+----------+
+/// ```
 #[derive(Debug)]
 pub struct CommandRequest {
     pub cmd: Command,
@@ -89,6 +103,13 @@ impl AsyncRead for CommandRequest {
     }
 }
 
+/// ```text
+/// +----+------+----------+------+----------+
+/// |VER | ULEN |  UNAME   | PLEN |  PASSWD  |
+/// +----+------+----------+------+----------+
+/// | 1  |  1   | 1 to 255 |  1   | 1 to 255 |
+/// +----+------+----------+------+----------+
+/// ```
 #[derive(Debug)]
 pub struct AuthRequest {
     pub user: String,

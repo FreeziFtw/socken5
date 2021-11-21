@@ -4,6 +4,13 @@ use async_trait::async_trait;
 use crate::error::Result;
 use crate::{AsyncWrite, VERSION, Method, Reply, Addr};
 
+/// ```text
+/// +----+--------+
+/// |VER | METHOD |
+/// +----+--------+
+/// | 1  |   1    |
+/// +----+--------+
+/// ```
 #[derive(Debug)]
 pub struct Handshake(pub Method);
 
@@ -19,6 +26,13 @@ impl AsyncWrite for Handshake {
     }
 }
 
+/// ```text
+/// +----+-----+-------+------+----------+----------+
+/// |VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |
+/// +----+-----+-------+------+----------+----------+
+/// | 1  |  1  | X'00' |  1   | Variable |    2     |
+/// +----+-----+-------+------+----------+----------+
+/// ```
 #[derive(Debug)]
 pub struct CommandResponse {
     pub reply: Reply,
@@ -57,6 +71,13 @@ impl AsyncWrite for CommandResponse {
     }
 }
 
+/// ```text
+/// +----+--------+
+/// |VER | STATUS |
+/// +----+--------+
+/// | 1  |   1    |
+/// +----+--------+
+/// ```
 #[derive(Debug)]
 pub struct AuthResponse(pub u8);
 

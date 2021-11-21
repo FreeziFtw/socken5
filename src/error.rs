@@ -2,8 +2,10 @@ use std::{result, io};
 use std::num::TryFromIntError;
 use std::string::FromUtf8Error;
 
+/// A socks5 result.
 pub type Result<T> = result::Result<T, Error>;
 
+/// A socks5 error.
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("invalid socks version (expected 5, found {0})")]
